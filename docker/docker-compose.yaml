@@ -1,0 +1,27 @@
+version: "1.0"
+
+services:
+  gaussian_splat:
+    image: gaussian_splat:latest
+    container_name: gaussian_splat_container
+    network_mode: host
+    environment:
+      - DISPLAY
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./workspace:/home/$USER/workspace
+      - /home/$USER/git:/home/$USER/git
+      - .bash_history:/home/$USER/.bash_history
+      - .ssh:/home/$USER/.ssh
+      - .cache:/home/$USER/.cache
+      - .vscode:/home/$USER/.vscode
+      - /home/$USER/.Xauthority:/home/$USER/.Xauthority
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              capabilities: [gpu]
+    user: $USER
+    restart: always
